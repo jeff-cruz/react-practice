@@ -1,39 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { FaStar } from "react-icons/fa"
 
-const createArray = (length) => [
-  ...Array(length)
-];
-
-function Star({selected = false, onSelect }) {
-  return (
-    <FaStar color={selected ? "red" : "gray"} onClick={onSelect}/>
-  );
-}
-
-function StarRating({ totalStars = 5 }) {
-  const [selectedStars, setSelectedStars] = useState(0);
-
-
-  return (
-  <>
-    {createArray(totalStars).map((n, i) => (
-      <Star
-        key={i}
-        selected={selectedStars > i}
-        onSelect={() => setSelectedStars(i + 1)}
-      />
-    ))}
-    <p>{selectedStars} of {totalStars}</p>
-  </>
-  );
-}
 
 function App() {
-  return <StarRating totalStars={5}/>;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://pokeapi.co/api/v2/pokemon`)
+      .then(res => res.json())
+      .then(res => setData(res.results));
+  }, []);
+
+  console.log(data);
+
+  if(data){
+    let counter = 1;
+    return (
+      <div>
+        <ul>
+          {data.map(pokemon => (
+            <li key={counter++}>{pokemon.name}</li>
+          ))}
+        </ul>
+        <button onClick={() => setData([])}>Remove Data</button>
+      </div>
+    )
+  }
+
+
+
+  return <p>No Users</p>;
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
