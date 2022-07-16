@@ -5,26 +5,33 @@ import reportWebVitals from './reportWebVitals';
 
 
 function App() {
-  const [name, setName] = useState("Jeffrey");
-  const [admin, setAdmin] = useState(false);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log(`Celebrate  ${name}`);
-  }, [name]);
+    fetch(`https://pokeapi.co/api/v2/pokemon`)
+      .then(res => res.json())
+      .then(res => setData(res.results));
+  }, []);
 
-  useEffect(() => {
-    console.log(`The user is: ${admin ? "admin" : "not admin"}`);
-  });
+  console.log(data);
 
-  return (
-    <section>
-      <p>Congratulations {name}!</p>
-      <button onClick={() => setName("Jasmine")}>Change Winner</button>
+  if(data){
+    let counter = 1;
+    return (
+      <div>
+        <ul>
+          {data.map(pokemon => (
+            <li key={counter++}>{pokemon.name}</li>
+          ))}
+        </ul>
+        <button onClick={() => setData([])}>Remove Data</button>
+      </div>
+    )
+  }
 
-      <p>{admin ? "logged in" : "not logged in"}</p>
-      <button onClick = {() => setAdmin(true)}>Log In</button>
-    </section>
-  )
+
+
+  return <p>No Users</p>;
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
