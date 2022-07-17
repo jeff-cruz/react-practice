@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
+const initialState = {
+  message: "hi"
+};
 
-function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon`)
-      .then(res => res.json())
-      .then(res => setData(res.results));
-  }, []);
-
-  console.log(data);
-
-  if(data){
-    let counter = 1;
-    return (
-      <div>
-        <ul>
-          {data.map(pokemon => (
-            <li key={counter++}>{pokemon.name}</li>
-          ))}
-        </ul>
-        <button onClick={() => setData([])}>Remove Data</button>
-      </div>
-    )
+function reducer (state, action) {
+  switch (action.type) {
+    case "yell":
+      return {
+        message: `HEY!!!! I JUST SAID ${state.message}`
+      };
+    case "whisper":
+      return {
+        message: `excuse me, i just said ${state.message}`
+      };
   }
+}
+function App() {
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
-
-
-  return <p>No Users</p>;
+  return (
+    <>
+      <p>Message: {state.message}</p>
+      <button onClick={() => dispatch({type: "yell"})}>YELL</button>
+      <button onClick={() => dispatch({type: "whisper"})}>whisper</button>
+    </>
+  )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
