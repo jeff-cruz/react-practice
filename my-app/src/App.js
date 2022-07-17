@@ -1,9 +1,9 @@
 import './App.css';
-import { TreesContext } from '.';
-import React, { useContext } from 'react';
+import { useTrees } from '.';
+import React from 'react';
 
 function App() {
-  const { trees } = useContext(TreesContext);
+  const { trees } = useTrees();
   return (
     <div>
       <h1>Trees I've Heard Of</h1>
