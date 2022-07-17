@@ -1,39 +1,27 @@
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { useInput } from './useInput';
+import App from './App';
 
-function App() {
-  const [titleProps, resetTitle] = useInput("");
-  const [colorProps, resetColor] = useInput("#000000");
+const TreesContext = createContext();
 
-  const submit = (event) => {
-    event.preventDefault();
-    alert(`${titleProps.value} sounds like ${colorProps.value}`);
-    resetTitle();
-    resetColor();
-  }
+export const useTrees = () => useContext(TreesContext);
 
-  return (
-    <form onSubmit={submit}>
-      <input
-      {...titleProps}
-      type="text"
-      placeholder="Sound..." />
-      <input
-      {...colorProps}
-      type="color" />
-      <button>ADD</button>
-    </form>
-  )
-}
+const trees = [
+  { id: "1", type: "Maple" },
+  { id: "2", type: "Oak" },
+  { id: "3", type: "Family" },
+  { id: "4", type: "Fake" },
+  { id: "5", type: "Component" }
+]
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <TreesContext.Provider value = {{ trees }}>
     <App />
-  </React.StrictMode>
+  </TreesContext.Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
