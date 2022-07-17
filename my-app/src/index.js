@@ -1,30 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { useInput } from './useInput';
 
 function App() {
-  const [sound, setSound] = useState("");
-  const [color, setColor] = useState("#000000");
+  const [titleProps, resetTitle] = useInput("");
+  const [colorProps, resetColor] = useInput("#000000");
 
   const submit = (event) => {
     event.preventDefault();
-    alert(`${sound} sounds like ${color}`);
-    setSound("");
-    setColor("#000000");
+    alert(`${titleProps.value} sounds like ${colorProps.value}`);
+    resetTitle();
+    resetColor();
   }
 
   return (
     <form onSubmit={submit}>
       <input
-      value={sound}
+      {...titleProps}
       type="text"
-      placeholder="Sound..."
-      onChange ={(event) => setSound(event.target.value)}/>
+      placeholder="Sound..." />
       <input
-      value={color}
-      type="color"
-      onChange ={(event) => setColor(event.target.value)}/>
+      {...colorProps}
+      type="color" />
       <button>ADD</button>
     </form>
   )
